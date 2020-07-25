@@ -5,17 +5,17 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public interface CrudService<E, ID> {
+public interface CrudService<E, ID, DTO> {
 
-    E findById(ID id);
+    DTO findById(ID id);
 
-    List<E> findAll();
+    List<DTO> findAll();
 
-    Page<E> findAllPageable(Pageable pageable);
+    Page<DTO> findAllPageable(Pageable pageable);
 
-    E save(E entity);
+    DTO save(E entity);
 
-    E update(ID id, E entity);
+    DTO update(ID id, E entity);
 
     void delete (ID id);
 }

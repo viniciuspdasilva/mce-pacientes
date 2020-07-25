@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import java.util.List;
@@ -27,12 +28,14 @@ public class Paciente extends SupperMappedEntity {
     private String nationality;
 
     @ManyToMany
+    @JoinColumn
     private List<Paciente> family;
 
     @OneToMany
     private List<Documentos> documents;
 
     @ManyToMany
+    @JoinColumn
     private List<Endereco> enderecos;
 
 }
