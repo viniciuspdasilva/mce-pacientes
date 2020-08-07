@@ -1,10 +1,7 @@
 package it.sup.mcepacientes.dtos.localizacao;
 
 import it.sup.mcepacientes.entities.pacientes.Paciente;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.List;
@@ -14,6 +11,8 @@ import java.util.List;
 @Log4j2
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class EnderecoRequestDTO {
 
     private String logradouro;

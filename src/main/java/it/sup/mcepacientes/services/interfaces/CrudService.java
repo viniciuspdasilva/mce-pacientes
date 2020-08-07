@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CrudService<E, ID, DTO> {
 
-    DTO findById(ID id);
+    DTO findById(ID id) throws Exception;
 
     List<DTO> findAll();
 
@@ -15,7 +15,7 @@ public interface CrudService<E, ID, DTO> {
 
     DTO save(E entity);
 
-    DTO update(ID id, E entity);
+    DTO update(ID id, E entity) throws Exception;
 
     void delete (ID id);
 }

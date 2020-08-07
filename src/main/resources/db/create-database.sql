@@ -1,4 +1,4 @@
-CREATE SCHEMA IF NOT EXISTS mce-pessoa;
+CREATE SCHEMA IF NOT EXISTS mce_pessoa;
 
 USE mce_pessoa;
 

@@ -45,10 +45,14 @@ public class EnderecoService implements CrudService<EnderecoRequestDTO, Long, En
         List<Endereco> all = this.repository.findAll();
         List<EnderecoResponseDTO> dtos = new ArrayList<>();
 
-        all.parallelStream().forEach(endereco -> {
-            EnderecoResponseDTO dto = getResponseDto(endereco);
-            dtos.add(dto);
-        });
+        if (all.size() > 0) {
+            all.parallelStream().forEach(endereco -> {
+                EnderecoResponseDTO dto = getResponseDto(endereco);
+                dtos.add(dto);
+            });
+        } else {
+            return dtos;
+        }
         return dtos;
     }
 
@@ -72,13 +76,12 @@ public class EnderecoService implements CrudService<EnderecoRequestDTO, Long, En
     @Override
     public EnderecoResponseDTO update(Long id, EnderecoRequestDTO entity) {
         Optional<Endereco> endereco = this.repository.findById(id);
-        EnderecoResponseDTO dto = endereco.map(end -> {
+        return endereco.map(end -> {
             setEndereco(entity, end);
             Endereco updated = this.repository.save(end);
 
             return this.getResponseDto(updated);
         }).orElseThrow(PersistenceException::new);
-        return dto;
     }
 
     @Override

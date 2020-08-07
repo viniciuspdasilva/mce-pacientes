@@ -1,11 +1,13 @@
 package it.sup.mcepacientes.services.paciente;
 
 import it.sup.mcepacientes.dtos.localizacao.EnderecoRequestDTO;
+import it.sup.mcepacientes.dtos.paciente.PacienteRequestDTO;
 import it.sup.mcepacientes.dtos.paciente.PacienteResponseDTO;
 import it.sup.mcepacientes.entities.localizacao.Endereco;
 import it.sup.mcepacientes.entities.pacientes.Paciente;
 import it.sup.mcepacientes.repository.paciente.PacienteRepository;
 import it.sup.mcepacientes.services.interfaces.CrudService;
+import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class PacienteService implements CrudService<EnderecoRequestDTO, Long, PacienteResponseDTO> {
+public class PacienteService implements CrudService<PacienteRequestDTO, Long, PacienteResponseDTO> {
 
     private final PacienteRepository repository;
 
@@ -64,20 +66,37 @@ public class PacienteService implements CrudService<EnderecoRequestDTO, Long, Pa
     }
 
     @Override
-    public PacienteResponseDTO save(EnderecoRequestDTO entity) {
-        Endereco endereco = Endereco.mockRequestDTO(entity);
+    public PacienteResponseDTO save(PacienteRequestDTO entity) {
+        Paciente endereco = Paciente.mockRequestDTO(entity);
 
-        return null;
+        Paciente save = this.repository.save(endereco);
+
+        return Paciente.mockResponse(save);
     }
 
+    @SneakyThrows
     @Override
-    public PacienteResponseDTO update(Long aLong, EnderecoRequestDTO entity) {
-        return null;
+    public PacienteResponseDTO update(Long aLong, PacienteRequestDTO entity) {
+        Paciente paciente = Paciente.mockRequestDTO(entity);
+
+        return this.repository.findById(aLong)
+                .map(pac -> {
+                    pac.setFirstname(paciente.getFirstname());
+                    pac.setMiddlename(paciente.getMiddlename());
+                    pac.setLastname(paciente.getLastname());
+                    pac.setDateBirth(paciente.getDateBirth());
+                    pac.setNationality(paciente.getNationality());
+                    pac.setFamily(paciente.getFamily());
+                    pac.setDocuments(paciente.getDocuments());
+                    pac.setEnderecos(paciente.getEnderecos());
+                    Paciente updated = this.repository.save(pac);
+                    return Paciente.mockResponse(updated);
+                }).orElseThrow(Exception::new);
     }
 
     @Override
     public void delete(Long aLong) {
-
+        this.repository.deleteById(aLong);
     }
 
 }
